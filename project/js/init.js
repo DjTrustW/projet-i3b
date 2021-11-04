@@ -18,18 +18,40 @@ function init(){
   //
   //********************************************************
   function pierre(pos = new THREE.Vector3(), coul = 0){
-    function lathe(){
+    function lathe1(){
       h = 0.135;
       r = (0.745/Math.PI)/2;
       p0 = new THREE.Vector3();
       p1 = new THREE.Vector3(r, 0, 0);
-      p2 = new THREE.Vector3(r, h/2, 0);
-      p3 = new THREE.Vector3(r, h, 0);
-      p4 = new THREE.Vector3(0, h, 0);
-      c1 = new THREE.QuadraticBezierCurve3(p0, p1, p2);
-      c2 = new THREE.QuadraticBezierCurve3(p2, p3, p4);
-      const geometry = new THREE.LatheGeometry(c1.getPoints(25), 50);
-      geometry.merge(new THREE.LatheGeometry(c2.getPoints(25), 50));
+      p2 = new THREE.Vector3(r, (3*h)/8, 0);
+      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
+      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
+      const material = new THREE.MeshPhongMaterial({color: 0x82878f});
+      const lathe = new THREE.Mesh(geometry, material);
+      lathe.rotation.x = Math.PI/2;
+      return lathe;
+    }
+    function lathe2(){
+      h = 0.135;
+      r = (0.745/Math.PI)/2;
+      p0 = new THREE.Vector3(r, (3*h)/8, 0);
+      p1 = new THREE.Vector3(r, h/2, 0);
+      p2 = new THREE.Vector3(r, (5*h)/8, 0);
+      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
+      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
+      const material = new THREE.MeshPhongMaterial({color: 0xcccccc});
+      const lathe = new THREE.Mesh(geometry, material);
+      lathe.rotation.x = Math.PI/2;
+      return lathe;
+    }
+    function lathe3(){
+      h = 0.135;
+      r = (0.745/Math.PI)/2;
+      p0 = new THREE.Vector3(r, (5*h)/8, 0);
+      p1 = new THREE.Vector3(r, h, 0);
+      p2 = new THREE.Vector3(0, h, 0);
+      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
+      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
       const material = new THREE.MeshPhongMaterial({color: 0x82878f});
       const lathe = new THREE.Mesh(geometry, material);
       lathe.rotation.x = Math.PI/2;
@@ -63,7 +85,9 @@ function init(){
     }
     coul = coul==0 ? 0xff0000 : 0x0000ff;
     const group = new THREE.Group();
-    group.add(lathe());
+    group.add(lathe1());
+    group.add(lathe2());
+    group.add(lathe3());
     group.add(cylinder1(coul));
     group.add(cylinder2(coul));
     group.add(box(coul));
