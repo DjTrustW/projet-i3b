@@ -17,7 +17,7 @@ function init(){
   //  P A R T I E     C U S T O M
   //
   //********************************************************
-  function pierre(pos = new THREE.Vector3(), coul = 0){
+  function pierre(pos = new THREE.Vector3(), team = 0){
     function lathe1(){
       h = 0.135;
       r = (0.745/Math.PI)/2;
@@ -83,7 +83,7 @@ function init(){
       box.position.z += 0.12;
       return box;
     }
-    coul = coul==0 ? 0xff0000 : 0x0000ff;
+    const coul = team==0 ? 0xff0000 : 0x0000ff;
     const group = new THREE.Group();
     group.add(lathe1());
     group.add(lathe2());
@@ -94,6 +94,7 @@ function init(){
     group.position.x = pos.x;
     group.position.y = pos.y;
     group.position.z = pos.z;
+    group.rotation.z = team==0 ? 0 : Math.PI;
     return group;
   }
   function terrain(pos = new THREE.Vector3()){
