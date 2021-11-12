@@ -94,7 +94,50 @@ function init(){
     group.position.x = pos.x;
     group.position.y = pos.y;
     group.position.z = pos.z;
-    group.rotation.z = team==0 ? 0 : Math.PI;
+    return group;
+  }
+  function balai(pos = new THREE.Vector3(), team = 0){
+    function cylinder1() {
+      const geometry = new THREE.CylinderGeometry(0.008, 0.008, 0.7, 10);
+      const material = new THREE.MeshBasicMaterial({color: 0x444444});
+      const cylinder = new THREE.Mesh(geometry, material);
+      cylinder.position.y -= 0.13;
+      cylinder.position.z += 0.34;
+      cylinder.rotation.x = Math.PI/2 + 0.4;
+      return cylinder;
+    }
+    function cylinder2(coul) {
+      const geometry = new THREE.CylinderGeometry(0.01, 0.01, 0.5, 10);
+      const material = new THREE.MeshPhongMaterial({color: coul});
+      const cylinder = new THREE.Mesh(geometry, material);
+      cylinder.position.y -= 0.303;
+      cylinder.position.z += 0.75;
+      cylinder.rotation.x = Math.PI/2 + 0.4;
+      return cylinder;
+    }
+    function box1() {
+      const geometry = new THREE.BoxGeometry(0.26, 0.04, 0.02);
+      const material = new THREE.MeshBasicMaterial({color: 0x444444});
+      const box = new THREE.Mesh(geometry, material);
+      box.position.z += 0.0101;
+      return box;
+    }
+    function box2(coul) {
+      const geometry = new THREE.BoxGeometry(0.255, 0.03, 0.015);
+      const material = new THREE.MeshPhongMaterial({color: coul});
+      const box = new THREE.Mesh(geometry, material);
+      box.position.z += 0.02;
+      return box;
+    }
+    const coul = team==0 ? 0xff0000 : 0x0000ff;
+    const group = new THREE.Group();
+    group.add(cylinder1());
+    group.add(cylinder2(coul));
+    group.add(box1());
+    group.add(box2(coul));
+    group.position.x = pos.x;
+    group.position.y = pos.y;
+    group.position.z = pos.z;
     return group;
   }
   function terrain(pos = new THREE.Vector3()){
@@ -140,6 +183,8 @@ function init(){
   scene.add(terrain());
   scene.add(p1 = pierre(new THREE.Vector3(0, 0.15, 0)));
   scene.add(p2 = pierre(new THREE.Vector3(0, -0.15, 0), 1));
+  scene.add(b1 = balai(new THREE.Vector3(0, 0.45, 0)));
+  scene.add(b2 = balai(new THREE.Vector3(0, -0.45, 0), 1));
   //********************************************************
   //
   // F I N      P A R T I E     G E O M E T R I Q U E
