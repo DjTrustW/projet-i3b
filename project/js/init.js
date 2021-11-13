@@ -115,26 +115,33 @@ function init(){
       cylinder.rotation.x = Math.PI/2 + 0.4;
       return cylinder;
     }
-    function box1() {
-      const geometry = new THREE.BoxGeometry(0.26, 0.04, 0.02);
-      const material = new THREE.MeshBasicMaterial({color: 0x444444});
-      const box = new THREE.Mesh(geometry, material);
-      box.position.z += 0.0101;
-      return box;
-    }
-    function box2(coul) {
-      const geometry = new THREE.BoxGeometry(0.255, 0.03, 0.015);
+    function box(coul) {
+      const geometry = new THREE.BoxGeometry(0.28, 0.03, 0.02);
       const material = new THREE.MeshPhongMaterial({color: coul});
       const box = new THREE.Mesh(geometry, material);
       box.position.z += 0.02;
       return box;
     }
+    function cone(x = 0, y = 0) {
+      const geometry = new THREE.CylinderGeometry(0.005, 0, 0.014, 6);
+      const material = new THREE.MeshBasicMaterial({color: 0x444444});
+      const cylinder = new THREE.Mesh(geometry, material);
+      cylinder.position.x += x / 100 - 0.132;
+      cylinder.position.y += y / 100 - 0.01;
+      cylinder.position.z += 0.007;
+      cylinder.rotation.x = Math.PI/2;
+      return cylinder;
+    }
     const coul = team==0 ? 0xff0000 : 0x0000ff;
     const group = new THREE.Group();
     group.add(cylinder1());
     group.add(cylinder2(coul));
-    group.add(box1());
-    group.add(box2(coul));
+    group.add(box(coul));
+    for (var i = 0; i < 27; i++) {
+      for (var j = 0; j < 3; j++) {
+        group.add(cone(i, j));
+      }
+    }
     group.position.x = pos.x;
     group.position.y = pos.y;
     group.position.z = pos.z;
