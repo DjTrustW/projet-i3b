@@ -150,7 +150,7 @@ function init(){
   function terrain(pos = new THREE.Vector3()){
     function line1(pos = new THREE.Vector3()) {
       const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 2.375, 0), new THREE.Vector3(0, -2.375, 0)]);
-      const material = new THREE.LineBasicMaterial({color:0x000000});
+      const material = new THREE.LineBasicMaterial({color:0x555555});
       const plane = new THREE.Line(geometry, material);
       plane.position.x = pos.x;
       plane.position.y = pos.y;
@@ -159,7 +159,7 @@ function init(){
     }
     function line2(pos = new THREE.Vector3()) {
       const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(21.035, 0, 0), new THREE.Vector3(-21.035, 0, 0)]);
-      const material = new THREE.LineBasicMaterial({color:0x000000});
+      const material = new THREE.LineBasicMaterial({color:0x555555});
       const plane = new THREE.Line(geometry, material);
       plane.position.x = pos.x;
       plane.position.y = pos.y;
@@ -187,16 +187,16 @@ function init(){
     const group = new THREE.Group();
     group.add(plane());
     group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(17.3736, 0, 0.0009)));
-    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(-17.3736, 0, 0.0009)));
+    //group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(-17.3736, 0, 0.0009)));
     group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(17.3736, 0, 0.0009)));
-    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(-17.3736, 0, 0.0009)));
-    group.add(line1(new THREE.Vector3(10.9736, 0, 0.00009)));
-    group.add(line1(new THREE.Vector3(-10.9736, 0, 0.00009)));
-    group.add(line1(new THREE.Vector3(17.3736, 0, 0.00009)));
-    group.add(line1(new THREE.Vector3(-17.3736, 0, 0.00009)));
-    group.add(line1(new THREE.Vector3(19.2036, 0, 0.00009)));
-    group.add(line1(new THREE.Vector3(-19.2036, 0, 0.00009)));
-    group.add(line2(new THREE.Vector3(0, 0, 0.00009)));
+    //group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(-17.3736, 0, 0.0009)));
+    group.add(line1(new THREE.Vector3(10.9736, 0, 0)));
+    group.add(line1(new THREE.Vector3(-10.9736, 0, 0)));
+    group.add(line1(new THREE.Vector3(17.3736, 0, 0)));
+    //group.add(line1(new THREE.Vector3(-17.3736, 0, 0)));
+    group.add(line1(new THREE.Vector3(19.2036, 0, 0)));
+    //group.add(line1(new THREE.Vector3(-19.2036, 0, 0)));
+    group.add(line2());
     group.position.x = pos.x;
     group.position.y = pos.y;
     group.position.z = pos.z;
