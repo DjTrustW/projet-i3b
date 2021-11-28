@@ -1,200 +1,45 @@
-function init(){
+function init() {
   var stats = initStats();
-  let rendu = new THREE.WebGLRenderer({antialias:true});
+  let rendu = new THREE.WebGLRenderer({ antialias: true });
   rendu.shadowMap.enabled = true;
-  let scene = new THREE.Scene();
-  let camera = new THREE.PerspectiveCamera(20, window.innerWidth/window.innerHeight, 0.1, 10000000);
-  rendu.shadowMap.enabled = true;
+  scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 10000000);
   rendu.setClearColor(new THREE.Color(0xFFFFFF));
-  rendu.setSize(window.innerWidth*.9, window.innerHeight*.9);
-  cameraLumiere(scene,camera);
+  rendu.setSize(window.innerWidth, window.innerHeight * .9);
+  cameraLumiere(scene, camera);
   lumiere(scene);
   var controls = new THREE.OrbitControls(camera, rendu.domElement);
-  var axes = new THREE.AxesHelper(1);
-  scene.add(axes);
+
   //********************************************************
   //
-  //  P A R T I E     C U S T O M
+  //  P A R T I E     M A I N
   //
   //********************************************************
-  function pierre(pos = new THREE.Vector3(), team = 0){
-    function lathe1(){
-      h = 0.135;
-      r = (0.745/Math.PI)/2;
-      p0 = new THREE.Vector3();
-      p1 = new THREE.Vector3(r, 0, 0);
-      p2 = new THREE.Vector3(r, (3*h)/8, 0);
-      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
-      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
-      const material = new THREE.MeshPhongMaterial({color: 0x82878f});
-      const lathe = new THREE.Mesh(geometry, material);
-      lathe.rotation.x = Math.PI/2;
-      return lathe;
-    }
-    function lathe2(){
-      h = 0.135;
-      r = (0.745/Math.PI)/2;
-      p0 = new THREE.Vector3(r, (3*h)/8, 0);
-      p1 = new THREE.Vector3(r, h/2, 0);
-      p2 = new THREE.Vector3(r, (5*h)/8, 0);
-      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
-      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
-      const material = new THREE.MeshPhongMaterial({color: 0xcccccc});
-      const lathe = new THREE.Mesh(geometry, material);
-      lathe.rotation.x = Math.PI/2;
-      return lathe;
-    }
-    function lathe3(){
-      h = 0.135;
-      r = (0.745/Math.PI)/2;
-      p0 = new THREE.Vector3(r, (5*h)/8, 0);
-      p1 = new THREE.Vector3(r, h, 0);
-      p2 = new THREE.Vector3(0, h, 0);
-      c = new THREE.QuadraticBezierCurve3(p0, p1, p2);
-      const geometry = new THREE.LatheGeometry(c.getPoints(25), 50);
-      const material = new THREE.MeshPhongMaterial({color: 0x82878f});
-      const lathe = new THREE.Mesh(geometry, material);
-      lathe.rotation.x = Math.PI/2;
-      return lathe;
-    }
-    function cylinder1(coul) {
-      const geometry = new THREE.CylinderGeometry(0.085, 0.085, 0.03, 30);
-      const material = new THREE.MeshPhongMaterial({color: coul});
-      const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.position.z += 0.12;
-      cylinder.rotation.x = Math.PI/2;
-      return cylinder;
-    }
-    function cylinder2(coul) {
-      const geometry = new THREE.CylinderGeometry(0.0075, 0.0075, 0.1, 20);
-      const material = new THREE.MeshPhongMaterial({color: coul});
-      const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.position.x += 0.01;
-      cylinder.position.z += 0.16;
-      cylinder.rotation.x = Math.PI/2;
-      cylinder.rotation.z = Math.PI/2;
-      return cylinder;
-    }
-    function box(coul) {
-      const geometry = new THREE.BoxGeometry(0.015, 0.015, 0.095);
-      const material = new THREE.MeshPhongMaterial({color: coul});
-      const box = new THREE.Mesh(geometry, material);
-      box.position.x += 0.06;
-      box.position.z += 0.12;
-      return box;
-    }
-    const coul = team==0 ? 0xff0000 : 0x0000ff;
-    const group = new THREE.Group();
-    group.add(lathe1());
-    group.add(lathe2());
-    group.add(lathe3());
-    group.add(cylinder1(coul));
-    group.add(cylinder2(coul));
-    group.add(box(coul));
-    group.position.x = pos.x;
-    group.position.y = pos.y;
-    group.position.z = pos.z;
-    return group;
-  }
-  function balai(pos = new THREE.Vector3(), team = 0){
-    function cylinder1() {
-      const geometry = new THREE.CylinderGeometry(0.008, 0.008, 0.7, 10);
-      const material = new THREE.MeshBasicMaterial({color: 0x444444});
-      const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.position.y -= 0.13;
-      cylinder.position.z += 0.34;
-      cylinder.rotation.x = Math.PI/2 + 0.4;
-      return cylinder;
-    }
-    function cylinder2(coul) {
-      const geometry = new THREE.CylinderGeometry(0.01, 0.01, 0.5, 10);
-      const material = new THREE.MeshPhongMaterial({color: coul});
-      const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.position.y -= 0.303;
-      cylinder.position.z += 0.75;
-      cylinder.rotation.x = Math.PI/2 + 0.4;
-      return cylinder;
-    }
-    function box(coul) {
-      const geometry = new THREE.BoxGeometry(0.28, 0.03, 0.02);
-      const material = new THREE.MeshPhongMaterial({color: coul});
-      const box = new THREE.Mesh(geometry, material);
-      box.position.z += 0.02;
-      return box;
-    }
-    function cone(x = 0, y = 0) {
-      const geometry = new THREE.CylinderGeometry(0.005, 0, 0.014, 6);
-      const material = new THREE.MeshBasicMaterial({color: 0x444444});
-      const cylinder = new THREE.Mesh(geometry, material);
-      cylinder.position.x += x / 100 - 0.132;
-      cylinder.position.y += y / 100 - 0.01;
-      cylinder.position.z += 0.007;
-      cylinder.rotation.x = Math.PI/2;
-      return cylinder;
-    }
-    const coul = team==0 ? 0xff0000 : 0x0000ff;
-    const group = new THREE.Group();
-    group.add(cylinder1());
-    group.add(cylinder2(coul));
-    group.add(box(coul));
-    for (var i = 0; i < 27; i++) {
-      for (var j = 0; j < 3; j++) {
-        group.add(cone(i, j));
-      }
-    }
-    group.position.x = pos.x;
-    group.position.y = pos.y;
-    group.position.z = pos.z;
-    return group;
-  }
-  function terrain(pos = new THREE.Vector3()){
-    function torus(coul, rin, rext, pos = new THREE.Vector3()){
-      const geometry = new THREE.TorusGeometry((rin+rext)/4, (rext-rin)/4, 2, 50);
-      const material = new THREE.MeshBasicMaterial({color:coul});
-      const torus = new THREE.Mesh(geometry, material);
-      torus.position.x = pos.x;
-      torus.position.y = pos.y;
-      torus.position.z = pos.z;
-      return torus;
-    }
-    function plane(pos = new THREE.Vector3()){
-      const geometry = new THREE.PlaneGeometry(42.07, 4.75);
-      const material = new THREE.MeshBasicMaterial({color:0xeeeeee, side:THREE.DoubleSide});
-      const plane = new THREE.Mesh(geometry, material);
-      plane.position.x = pos.x;
-      plane.position.y = pos.y;
-      plane.position.z = pos.z;
-      return plane;
-    }
-    const group = new THREE.Group();
-    group.add(plane());
-    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(17.3736, 0, 0.0009)));
-    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(-17.3736, 0, 0.0009)));
-    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(17.3736, 0, 0.0009)));
-    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(-17.3736, 0, 0.0009)));
-    group.position.x = pos.x;
-    group.position.y = pos.y;
-    group.position.z = pos.z;
-    return group;
-  }
-  //********************************************************
-  //
-  // F I N      P A R T I E     C U S T O M
-  //
-  //********************************************************
-  //********************************************************
-  //
-  //  P A R T I E     G E O M E T R I Q U E
-  //
-  //********************************************************
+
+  h_ = 0.135;
+  r_ = (0.745 / Math.PI) / 2;
+
+  start_ = -17.35;
+  nbpts_repr = 100;
+  nbpts_tir = 150;
+  nb_lancer = 0;
+  P_0 = new THREE.Vector3(start_, 0, 0.2);
+  let P1 = new THREE.Vector3(0, 0, 0.2);
+  let P2 = new THREE.Vector3(17, 0, 0.2);
+
+  cb = new THREE.QuadraticBezierCurve3(P_0, P1, P2);
+  repr_cb = TraceBezierQuadratique(cb);
+  refreshBezier(scene, P1, P2)
+
+  pierre_courante = null;
+  collision_courante = false;
+  pierre_jouer = [];
+
   scene.add(terrain());
-  scene.add(p1 = pierre(new THREE.Vector3(0, 0.15, 0)));
-  scene.add(p2 = pierre(new THREE.Vector3(0, -0.15, 0), 1));
-  scene.add(b1 = balai(new THREE.Vector3(0, 0.45, 0)));
-  scene.add(b2 = balai(new THREE.Vector3(0, -0.45, 0), 1));
+
   //********************************************************
   //
-  // F I N      P A R T I E     G E O M E T R I Q U E
+  // F I N      P A R T I E     M A I N
   //
   //********************************************************
   //********************************************************
@@ -202,19 +47,78 @@ function init(){
   //  D E B U T     M E N U     G U I
   //
   //********************************************************
+
+  let gui = new dat.GUI();
+
+  let menuGUI = new function () {
+
+    this.P1x = P1.x;
+    this.P1y = P1.y;
+    this.P2x = P2.x;
+    this.P2y = P2.y;
+    this.i = 0;
+
+    this.lancer = function (i) {
+
+      if (nb_lancer <= 10 && collision_courante == false) {
+        if (i == 1) {
+          nb_lancer++;
+
+          let trajet = cb.clone()
+          cbeGeometry = new THREE.Geometry();
+          cbeGeometry.vertices = trajet.getPoints(nbpts_tir);
+          let mod = nb_lancer % 2;
+          switch (mod) {
+            case 0:
+              {
+                scene.add(pierre_courante = pierre(P_0, 1));
+                pierre_courante.position.z = 0; break;
+              }
+            case 1:
+              {
+                scene.add(pierre_courante = pierre(P_0, 0));
+                pierre_courante.position.z = 0; break;
+              }
+
+          }
+        }
+        if (i < cbeGeometry.vertices.length) {
+          setTimeout(function () {
+            let trajet = cb.clone();
+            pierre_jouer.push(pierre_courante);
+            pierre_courante.position.x = cbeGeometry.vertices[i].x;
+            pierre_courante.position.y = cbeGeometry.vertices[i].y;
+            verifcollisionall(pierre_courante); i++;
+            if (i <= nbpts_tir) { menuGUI.lancer(i); }
+
+          }, 16);
+        }
+      }
+    }
+  }
+
+  let guiPos = gui.addFolder("Points");
+  guiPos.add(menuGUI, 'P1x', -5, 5).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
+  guiPos.add(menuGUI, 'P1y', -3, 3).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
+  guiPos.add(menuGUI, 'P2x', 14, 25).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
+  guiPos.add(menuGUI, 'P2y', -2, 2).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
+  guiPos.open()
+  gui.add(menuGUI, 'lancer').onChange(function () { collision_courante = false; menuGUI.lancer(1); });
+
   //********************************************************
   //
   //  F I N     M E N U     G U I
   //
   //********************************************************
+
   renduAnim();
   document.getElementById("webgl").appendChild(rendu.domElement);
   rendu.render(scene, camera);
-  function reAffichage(){
-    setTimeout(function (){}, 200);
+  function reAffichage() {
+    setTimeout(function () { }, 200);
     rendu.render(scene, camera);
   }
-  function renduAnim(){
+  function renduAnim() {
     stats.update();
     requestAnimationFrame(renduAnim);
     rendu.render(scene, camera);
