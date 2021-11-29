@@ -173,10 +173,36 @@
 
   function terrain(pos = new THREE.Vector3()) {
 
-    function torus(coul, rin, rext, pos = new THREE.Vector3()) {
+    function line1(pos = new THREE.Vector3()) {
 
-      const geometry = new THREE.TorusGeometry((rin + rext) / 4, (rext - rin) / 4, 2, 50);
-      const material = new THREE.MeshBasicMaterial({ color: coul });
+      const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 2.375, 0), new THREE.Vector3(0, -2.375, 0)]);
+      const material = new THREE.LineBasicMaterial({color:0x555555});
+      const plane = new THREE.Line(geometry, material);
+
+      plane.position.x = pos.x;
+      plane.position.y = pos.y;
+      plane.position.z = pos.z;
+
+      return plane;
+    }
+
+    function line2(pos = new THREE.Vector3()) {
+
+      const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(21.035, 0, 0), new THREE.Vector3(-21.035, 0, 0)]);
+      const material = new THREE.LineBasicMaterial({color:0x555555});
+      const plane = new THREE.Line(geometry, material);
+
+      plane.position.x = pos.x;
+      plane.position.y = pos.y;
+      plane.position.z = pos.z;
+
+      return plane;
+    }
+
+    function torus(coul, rin, rext, pos = new THREE.Vector3()){
+
+      const geometry = new THREE.TorusGeometry((rin+rext)/4, (rext-rin)/4, 2, 50);
+      const material = new THREE.MeshBasicMaterial({color:coul});
       const torus = new THREE.Mesh(geometry, material);
 
       torus.position.x = pos.x;
@@ -201,12 +227,19 @@
 
     const group = new THREE.Group();
 
-    group.add(plane(new THREE.Vector3(0, 0, 0), 42, 4, 0xeeeeee));
-    group.add(plane(new THREE.Vector3(0, 0, -0.01), 100, 100, 0x5D5D5D));
-    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(17.3736, 0, 0.01)));
-    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(-17.3736, 0, 0.01)));
-    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(17.3736, 0, 0.01)));
-    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(-17.3736, 0, 0.01)));
+    group.add(plane(new THREE.Vector3(0, 0, 0), 42.07, 4.75, 0xeeeeee));
+    group.add(plane(new THREE.Vector3(0, 0, -0.02), 100, 100, 0x5d5d5d));
+    group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(17.3736, 0, 0.0009)));
+    //group.add(torus(0xff0000, 0.3, 1.22, new THREE.Vector3(-17.3736, 0, 0.0009)));
+    group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(17.3736, 0, 0.0009)));
+    //group.add(torus(0x0000ff, 2.43, 3.66, new THREE.Vector3(-17.3736, 0, 0.0009)));
+    group.add(line1(new THREE.Vector3(10.9736, 0, 0)));
+    group.add(line1(new THREE.Vector3(-10.9736, 0, 0)));
+    group.add(line1(new THREE.Vector3(17.3736, 0, 0)));
+    //group.add(line1(new THREE.Vector3(-17.3736, 0, 0)));
+    group.add(line1(new THREE.Vector3(19.2036, 0, 0)));
+    //group.add(line1(new THREE.Vector3(-19.2036, 0, 0)));
+    group.add(line2());
 
     group.position.x = pos.x;
     group.position.y = pos.y;
