@@ -95,7 +95,7 @@ function calcul_score() {
         mes += score
         document.getElementById("score").innerHTML = mes;
     }
-    else { document.getElementById("score").innerHTML = "wesh faut pas viser a coter" ;}
+    else { document.getElementById("score").innerHTML = "wesh faut pas viser a coter"; }
 }
 
 function get_coul(pierre) {

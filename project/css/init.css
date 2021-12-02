@@ -1,11 +1,12 @@
 body {
- background-color:#AAAAAA;
+ background-color:#383838;
 /*margin: 0.5;
     overflow: hidden;*/
 }
 
 #webgl{
- border:solid 2px red;
+ border:solid 5px rgb(87, 87, 87);
+ border-radius: 5px;
  /*margin-left: 0.5cm;
  width:95%;
  height:95%;*/
