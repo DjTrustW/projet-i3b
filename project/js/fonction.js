@@ -20,7 +20,7 @@ function verifcollisionall(pierre) {
 }
 
 function verifcollisionborder(pierre) {
-    if (pierre_courante.position.y > 2 - r_ || pierre_courante.position.y < -2 + r_ || pierre_courante.position.x > 20 - r_) {
+    if (pierre_courante.position.y > 2 - r_ || pierre_courante.position.y < -2 + r_ || pierre_courante.position.x > 21 - r_) {
         scene.remove(pierre);
         pierre_jouer.splice(pierre_jouer.indexOf(pierre), 1);
     }
@@ -43,7 +43,6 @@ function rebond(pierre1_init_pos, pierre1, pierre2, multyply) {
     let y = pierre2.position.y - pierre1_init_pos.position.y;
     let vec = new THREE.Vector3(x, y, 0);
     pierre2.position.x += x * multyply; pierre2.position.y += y * multyply;
-    console.log(pierre);
     verifcollisionall(pierre2);
     if (multyply >= 0.1 && pierre2 != null) {
         setTimeout(function () {
@@ -85,15 +84,18 @@ function calcul_score() {
     trie_tab();
     let score = 0;
     let i = 0;
-    let coul_depart = get_coul(pierre_jouer[0]);
-    while (i < pierre_jouer.length && get_coul(pierre_jouer[i]) == coul_depart) {
-        score++; i++;
+    if (pierre_jouer.length) {
+        let coul_depart = get_coul(pierre_jouer[0]);
+        while (i < pierre_jouer.length && get_coul(pierre_jouer[i]) == coul_depart) {
+            score++; i++;
+        }
+        let mes = "Les ";
+        mes += coul_depart;
+        mes += " : ";
+        mes += score
+        document.getElementById("score").innerHTML = mes;
     }
-    let mes = "Les ";
-    mes += coul_depart;
-    mes += " : ";
-    mes += score
-    document.getElementById("score").innerHTML = mes;
+    else { document.getElementById("score").innerHTML = "wesh faut pas viser a coter" ;}
 }
 
 function get_coul(pierre) {
