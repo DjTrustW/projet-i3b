@@ -3,12 +3,12 @@ function init() {
   let rendu = new THREE.WebGLRenderer({ antialias: true });
   rendu.shadowMap.enabled = true;
   scene = new THREE.Scene();
-  let camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 10000000);
+  camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 10000000);
   rendu.setClearColor(new THREE.Color(0xFFFFFF));
-  rendu.setSize(window.innerWidth, window.innerHeight * .9);
+  rendu.setSize(window.innerWidth * .9, window.innerHeight * .9);
   cameraLumiere(scene, camera);
   lumiere(scene);
-  var controls = new THREE.OrbitControls(camera, rendu.domElement);
+  //var controls = new THREE.OrbitControls(camera, rendu.domElement);
 
   //********************************************************
   //
@@ -16,25 +16,11 @@ function init() {
   //
   //********************************************************
 
-  h_ = 0.135;
-  r_ = (0.745 / Math.PI) / 2;
-
-  start_ = -17.35;
-  nbpts_repr = 100;
-  nbpts_tir = 150;
-  nb_lancer = 0;
-  P_0 = new THREE.Vector3(start_, 0, 0.2);
+  //initialisation avec des valeur par defaut pour la premiere représentation de la courbe 
   let P1 = new THREE.Vector3(0, 0, 0.2);
   let P2 = new THREE.Vector3(17, 0, 0.2);
 
-  cb = new THREE.QuadraticBezierCurve3(P_0, P1, P2);
-  repr_cb = TraceBezierQuadratique(cb);
-  refreshBezier(scene, P1, P2)
-
-  pierre_courante = null;
-  collision_courante = false;
-  pierre_jouer = [];
-
+  refreshBezier(scene, P1, P2);
   scene.add(terrain());
 
   //********************************************************
@@ -48,62 +34,57 @@ function init() {
   //
   //********************************************************
 
-  let gui = new dat.GUI();
+  gui = new dat.GUI();
 
-  let menuGUI = new function () {
+  menuGUI = new function () {
 
     this.P1x = P1.x;
     this.P1y = P1.y;
     this.P2x = P2.x;
     this.P2y = P2.y;
     this.i = 0;
+    this.camera_view = camera_vue;
 
-    this.lancer = function (i) {
+    this.camera_piste = function () {
+      camera.position.x = -17.35;
+      camera.position.y = 0;
+      camera.position.z = 1;
+      camera.lookAt(17.35, 0, 0);
+    }
+    this.camera_maison = function () {
+      camera.position.x = 17.35;
+      camera.position.y = 8;
+      camera.position.z = 8;
+      camera.lookAt(17.35, 0, 0);
+    }
+    this.camera_basique = function () {
+      camera.position.x = 50;
+      camera.position.y = 50;
+      camera.position.z = 50;
+      camera.lookAt(0, 0, 0);
+    }
 
-      if (nb_lancer <= 10 && collision_courante == false) {
-        if (i == 1) {
-          nb_lancer++;
-
-          let trajet = cb.clone()
-          cbeGeometry = new THREE.Geometry();
-          cbeGeometry.vertices = trajet.getPoints(nbpts_tir);
-          let mod = nb_lancer % 2;
-          switch (mod) {
-            case 0:
-              {
-                scene.add(pierre_courante = pierre(P_0, 1));
-                pierre_courante.position.z = 0; break;
-              }
-            case 1:
-              {
-                scene.add(pierre_courante = pierre(P_0, 0));
-                pierre_courante.position.z = 0; break;
-              }
-
-          }
-        }
-        if (i < cbeGeometry.vertices.length) {
-          setTimeout(function () {
-            let trajet = cb.clone();
-            pierre_jouer.push(pierre_courante);
-            pierre_courante.position.x = cbeGeometry.vertices[i].x;
-            pierre_courante.position.y = cbeGeometry.vertices[i].y;
-            verifcollisionall(pierre_courante); i++;
-            if (i <= nbpts_tir) { menuGUI.lancer(i); }
-
-          }, 16);
-        }
+    this.lancer = function () {
+      collision_courante = false;
+      if (tir_en_cour == false && nb_lancer < 10) {
+        trajet = cb.clone();
+        nb_lancer++;
+        setTimeout(tir(1), 10000);
       }
     }
   }
 
-  let guiPos = gui.addFolder("Points");
+  guiPos = gui.addFolder("Points");
   guiPos.add(menuGUI, 'P1x', -5, 5).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
   guiPos.add(menuGUI, 'P1y', -3, 3).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
   guiPos.add(menuGUI, 'P2x', 14, 25).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
   guiPos.add(menuGUI, 'P2y', -2, 2).onChange(function () { refreshBezier(scene, new THREE.Vector3(menuGUI.P1x, menuGUI.P1y, 0.2), new THREE.Vector3(menuGUI.P2x, menuGUI.P2y, 0.2)); });
   guiPos.open()
-  gui.add(menuGUI, 'lancer').onChange(function () { collision_courante = false; menuGUI.lancer(1); });
+  gui.add(menuGUI, 'lancer').onChange(function () { menuGUI.lancer() });
+  gui.add(menuGUI, 'camera_piste').onChange(function () { menuGUI.camera_piste });
+  gui.add(menuGUI, 'camera_maison').onChange(function () { menuGUI.camera_maison });
+  gui.add(menuGUI, 'camera_basique').onChange(function () { menuGUI.camera_basique });
+  gui.add(menuGUI, 'camera_view').onChange(function () { camera_vue = menuGUI.camera_view });
 
   //********************************************************
   //
