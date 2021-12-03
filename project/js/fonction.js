@@ -37,6 +37,7 @@ function verifcollisionborder(pierre) {
         
         if (pierre == pierre_courante) { scene.remove(balai_courant);}// verifie si cet collision est la pierre courante est si oui retirera alors le balai 
         scene.remove(pierre);pierre_jouer.splice(pierre_jouer.indexOf(pierre), 1);// retire la pierre du tableau et de la scene
+        calcul_score();
     }
 }
 
@@ -130,7 +131,7 @@ function calcul_score() {
         document.getElementById("score").innerHTML = mes;
     }
     // affiche dans <div id="score"> rater si aucun pierres on été lancer et rater
-    else{document.getElementById("score").innerHTML= "Rater"}
+    else{document.getElementById("score").className = "noir";document.getElementById("score").innerHTML= "Rater"}
 }
 
 //fonction qui retour la couleur de la pierre

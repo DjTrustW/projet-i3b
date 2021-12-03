@@ -12,6 +12,9 @@ body {
     text-align: center;
     font-size: 30px;
 }
+.noir {
+    color: #000000;
+}
 
 .rouge{
     color: #FF0000;
