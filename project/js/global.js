@@ -1,11 +1,11 @@
 //variables globales
 
-h_ = 0.135; // hauteur des pierres
-r_ = (0.745 / Math.PI) / 2; // rayon des pierres
-start_ = -17.35;  // position x du départ
+h_ = 0.135; // hauteur des pierres(non utiliser dans les assets)
+r_ = (0.745 / Math.PI) / 2; // rayon des pierres (non utiliser dans les assets)
+start_ = -17.35;  // position x du départ 
 end_ = 17, 35; // position x du centre de la maison d arriver
-nbpts_repr = 100; // nb de points pour tracer la courbe
-nbpts_tir = 150; // nombre de point pour lors des tirs
+nbpts_repr = 100; // nb de points pour tracer la courbe (modifiable, default : 100)
+nbpts_tir = 150; // nombre de point pour lors des tirs (modifiable, default : 150)
 nb_lancer = 0; // nombre de lancer dans la partie 
 tir_en_cour = false; // variable si un tir est en cour 
 repr_cb = null; // representation de la courbe 
